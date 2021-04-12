@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 6464766887207124741}
   m_Layer: 0
   m_Name: Red Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -148,13 +148,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyName: Red Squad
-  column: 0
-  row: 0
-  attackFrequency: 2
+  attackFrequency: 4
   bulletGravity: 1
-  hitDemage: 1
+  hitDemage: 2
+  scorePoints: 2
   firePoint: {fileID: 8604640209589713122}
   bullet: {fileID: 2085955725642860977, guid: ef7a34dbee07f46b3bb59d1a7d031742, type: 3}
+  gameScore: {fileID: 0}
+  isRunning: 1
 --- !u!61 &6464766887207124741
 BoxCollider2D:
   m_ObjectHideFlags: 0

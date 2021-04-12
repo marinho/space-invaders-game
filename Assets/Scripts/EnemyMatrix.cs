@@ -5,80 +5,131 @@ using UnityEngine;
 public class EnemyMatrix : MonoBehaviour
 {
     [SerializeField] List<GameObject> enemies;
-    [SerializeField] GameObject placeholderSprite;
+    [SerializeField] GameObject enemyContainer;
     [SerializeField] int columns;
     [SerializeField] int gap;
-    [SerializeField] float centerX = 0f;
-    [SerializeField] float centerY = 0f;
-    [SerializeField] float centerZ = 0f;
-    [SerializeField] float timeToNextRow = 3f;
+    [SerializeField] float timeToNextRow = 2f;
+    [SerializeField] float accellerationForNextRow = .5f;
+    [SerializeField] GameObject respawn;
 
-    private int latestRow = 0;
     private List<GameObject> placedEnemies;
     private float counterTimeToNextRow = 0f;
+    private bool isRunning = false;
+    private bool enemyRotated = false;
+    private bool enemyRotationTrigger = false;
+    private float activeTimeToNextRow;
 
-    private void Update()
+    private void Awake()
     {
-        counterTimeToNextRow += Time.deltaTime;
+        placedEnemies = new List<GameObject>();
+    }
+
+    private void Start()
+    {
+        activeTimeToNextRow = timeToNextRow;
     }
 
     private void FixedUpdate()
     {
-        if (counterTimeToNextRow > timeToNextRow)
+        if (isRunning)
         {
-            StartCoroutine(MoveOneRowDown());
-            //ShuffleNewEnemies();
-            counterTimeToNextRow = counterTimeToNextRow % timeToNextRow;
+            counterTimeToNextRow += Time.deltaTime;
+            if (counterTimeToNextRow > activeTimeToNextRow)
+            {
+                counterTimeToNextRow = counterTimeToNextRow % activeTimeToNextRow;
+                var gameScore = GetComponent<GameScore>();
+                var nextPhase = gameScore.NextPhase();
+                StartCoroutine(MoveOneRowDown());
+                ShuffleNewEnemiesRow(nextPhase);
+
+                if (enemyRotated && enemyRotationTrigger)
+                {
+                    enemyRotated = false;
+                    enemyRotationTrigger = false;
+
+                    Accelerate();
+                }
+            }
         }
     }
 
-    IEnumerator MoveOneRowDown()
+    private void Accelerate()
     {
-        // TODO
+        activeTimeToNextRow = activeTimeToNextRow * accellerationForNextRow;
+        var gameScore = GetComponent<GameScore>();
+        gameScore.IncreaseMaximumPlayerHealth();
+        gameScore.ResetPlayerHealth();
+    }
+
+    private IEnumerator MoveOneRowDown()
+    {
+        var oldPosition = enemyContainer.transform.position;
+        var targetPosition = new Vector3(
+            oldPosition.x,
+            oldPosition.y - gap,
+            oldPosition.z
+            );
+        enemyContainer.transform.position = Vector3.MoveTowards(oldPosition, targetPosition, 1);
         yield return null;
     }
 
-    public void ShuffleNewEnemies(int count)
+    public void ShuffleNewEnemiesRow(int phase)
     {
-        if (placedEnemies == null)
+        int count = phase % columns;
+        int enemyIndex = phase / columns % enemies.Count;
+        if (enemyIndex == 0 && enemyRotationTrigger)
         {
-            placedEnemies = new List<GameObject>();
+            enemyRotated = true;
         }
-
-        int enemyIndex = 0; // XXX temp
+        else if (enemyIndex == 1)
+        {
+            enemyRotationTrigger = true;
+        }
 
         for (int counter = 0; counter < count; counter++)
         {
-            int row = CalculateRow(latestRow);
-            int column = CalculateColumn(counter);
-            var enemyObj = AddEnemy(enemyIndex, column, row);
+            float column = CalculateColumn(counter, count);
+            var enemyObj = AddEnemy(enemyIndex, column);
 
             placedEnemies.Add(enemyObj);
         }
     }
 
-    int CalculateRow(int reference)
+    float CalculateColumn(int position, int count)
     {
-        return (int)(centerY + reference);
+        float start = (float)count / 2 * -1;
+        float col = start + position;
+        return col;
     }
 
-    int CalculateColumn(int reference)
+    GameObject AddEnemy(int enemyIndex, float column)
     {
-        return (int)(centerX + reference);
-    }
-
-    GameObject AddEnemy(int enemyIndex, int column, int row)
-    {
+        float shift = gap / 2;
         var rotation = GetComponent<Transform>().rotation;
-        var position = new Vector3(column * gap, row * gap, centerZ);
+        var position = new Vector3(
+            column * gap + shift,
+            respawn.transform.position.y,
+            enemyContainer.transform.position.z
+        );
         var enemyObj = Instantiate(enemies[enemyIndex], position, rotation);
+        enemyObj.transform.parent = enemyContainer.transform;
 
         var enemyInfo = enemyObj.GetComponent<Enemy>();
-        enemyInfo.column = column;
-        enemyInfo.row = row;
         enemyInfo.gameScore = GetComponent<GameScore>();
 
         return enemyObj;
+    }
+
+    public void ResetEnemies()
+    {
+        while (placedEnemies.Count > 0)
+        {
+            RemoveEnemy(placedEnemies[0]);
+        }
+        enemyRotated = false;
+        enemyRotationTrigger = false;
+        activeTimeToNextRow = timeToNextRow;
+        enemyContainer.transform.position = new Vector3(enemyContainer.transform.position.x, 0, enemyContainer.transform.position.z);
     }
 
     public void EnableEnemies()
@@ -88,6 +139,7 @@ public class EnemyMatrix : MonoBehaviour
             var enemyInfo = enemyObj.GetComponent<Enemy>();
             enemyInfo.EnableEnemy();
         }
+        isRunning = true;
     }
 
     public void DisableEnemies()
@@ -97,6 +149,7 @@ public class EnemyMatrix : MonoBehaviour
             var enemyInfo = enemy.GetComponent<Enemy>();
             enemyInfo.DisableEnemy();
         }
+        isRunning = false;
     }
 
     public void RemoveEnemy(GameObject removedEnemy)

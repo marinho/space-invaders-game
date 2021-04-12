@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 4996464841484317853}
   m_Layer: 0
   m_Name: Green Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -148,13 +148,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyName: Green Jellyfish
-  column: 0
-  row: 0
-  attackFrequency: 2
+  attackFrequency: 1
   bulletGravity: 1
   hitDemage: 1
+  scorePoints: 5
   firePoint: {fileID: 4078298806651363632}
   bullet: {fileID: 2085955725642860977, guid: ef7a34dbee07f46b3bb59d1a7d031742, type: 3}
+  gameScore: {fileID: 0}
+  isRunning: 1
 --- !u!61 &4996464841484317853
 BoxCollider2D:
   m_ObjectHideFlags: 0

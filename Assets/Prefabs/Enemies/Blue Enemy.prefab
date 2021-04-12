@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2157855226016276264}
   m_Layer: 0
   m_Name: Blue Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -118,13 +118,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyName: Blue Anthead
-  column: 0
-  row: 0
   attackFrequency: 2
   bulletGravity: 1
-  hitDemage: 1
+  hitDemage: 3
+  scorePoints: 8
   firePoint: {fileID: 959931122154351484}
   bullet: {fileID: 2085955725642860977, guid: ef7a34dbee07f46b3bb59d1a7d031742, type: 3}
+  gameScore: {fileID: 0}
+  isRunning: 1
 --- !u!61 &2157855226016276264
 BoxCollider2D:
   m_ObjectHideFlags: 0

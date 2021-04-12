@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IBulletTarget
 {
     [SerializeField] float speed;
     [SerializeField] float bulletSpeed;
@@ -11,14 +11,14 @@ public class Player : MonoBehaviour
     [SerializeField] GameObject bullet;
     [SerializeField] GameObject backend;
 
-    private bool isEnabled;
+    private bool isRunning;
     private Vector3 change;
     private Animator animator;
     private Rigidbody2D rigidbody2d;
 
     private void Awake()
     {
-        isEnabled = false;
+        isRunning = false;
     }
 
     void Start()
@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isEnabled)
+        if (isRunning)
         {
             change = Vector3.zero;
             change.x = Input.GetAxisRaw("Horizontal");
@@ -67,7 +67,7 @@ public class Player : MonoBehaviour
         );
     }
 
-    public void TakeDemage(int damage, Vector3 position)
+    public void TakeDamage(int damage, Vector3 position)
     {
         if (backend == null)
         {
@@ -77,7 +77,7 @@ public class Player : MonoBehaviour
         var gameScore = backend.GetComponent<GameScore>();
         gameScore.HitDamage(damage);
 
-        if (gameScore.playerHealth <= 0)
+        if (gameScore.PlayerHealthIsZero())
         {
             GameOver();
         }
@@ -100,7 +100,7 @@ public class Player : MonoBehaviour
     void GameOver()
     {
         var gameScore = backend.GetComponent<GameScore>();
-        gameScore.ShowGameOver();
+        gameScore.GameOver();
     }
 
     void Attack()
@@ -113,11 +113,11 @@ public class Player : MonoBehaviour
 
     public void EnablePlayer()
     {
-        isEnabled = true;
+        isRunning = true;
     }
 
     public void DisablePlayer()
     {
-        isEnabled = false;
+        isRunning = false;
     }
 }

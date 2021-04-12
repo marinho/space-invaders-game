@@ -4,24 +4,29 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    [SerializeField] int damage = 1;
+    [SerializeField] public int damage = 1;
+    [SerializeField] public string targetTag;
 
     private void OnTriggerEnter2D(Collider2D target)
     {
-        var player = target.GetComponent<Player>();
-        if (player != null)
+        if (!target.CompareTag(targetTag))
         {
-            var position = transform.position;
-            player.TakeDemage(damage, position);
+            return;
         }
-        else
+
+        var position = transform.position;
+
+        if (targetTag == "Player")
         {
-            var enemy = target.GetComponent<Enemy>();
-            if (enemy != null)
-            {
-                var position = transform.position;
-                enemy.TakeDemage(target.gameObject, position);
-            }
+            var player = (target.gameObject.GetComponent<Player>());
+            player.TakeDamage(damage, position);
         }
+        else if (targetTag == "Enemy")
+        {
+            var enemy = (target.gameObject.GetComponent<Enemy>());
+            enemy.TakeDamage(damage, position);
+        }
+
+        Destroy(gameObject);
     }
 }

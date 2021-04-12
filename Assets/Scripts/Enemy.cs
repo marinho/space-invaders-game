@@ -2,27 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IBulletTarget
 {
     [SerializeField] public string enemyName;
-    [SerializeField] public int column;
-    [SerializeField] public int row;
     [SerializeField] public float attackFrequency = 2f;
     [SerializeField] public float bulletGravity = 1f;
-    [SerializeField] public float hitDemage = 1f;
+    [SerializeField] public int hitDemage = 1;
     [SerializeField] public int scorePoints = 1;
 
     [SerializeField] Transform firePoint;
     [SerializeField] GameObject bullet;
 
     public GameScore gameScore;
-    public bool isEnabled = true;
+    public bool isRunning = true;
 
     private float timer = 0;
 
     void Update()
     {
-        if (isEnabled)
+        if (isRunning)
         {
             timer += Time.deltaTime;
 
@@ -38,37 +36,38 @@ public class Enemy : MonoBehaviour
     {
         var bulletObj = Instantiate(bullet, firePoint.position, firePoint.rotation);
         bulletObj.GetComponent<Rigidbody2D>().gravityScale = bulletGravity;
+        bulletObj.GetComponent<Bullet>().damage = hitDemage;
     }
 
-    public void TakeDemage(GameObject instance, Vector3 position)
+    public void TakeDamage(int damage, Vector3 position)
     {
         if (gameScore != null)
         {
             gameScore.IncreaseScore(scorePoints);
         }
 
-        Die(instance);
+        Die();
     }
 
-    void Die(GameObject enemyObj)
+    void Die()
     {
-        isEnabled = false;
-        gameScore.GetComponent<EnemyMatrix>().RemoveEnemy(enemyObj);
+        isRunning = false;
+        gameScore.GetComponent<EnemyMatrix>().RemoveEnemy(gameObject);
     }
 
     public void EnableEnemy()
     {
-        isEnabled = true;
+        isRunning = true;
     }
 
     public void DisableEnemy()
     {
-        isEnabled = false;
+        isRunning = false;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("1119: " + collision.name); // XXX
+        Debug.Log("1119: " + collision.name + ", " + collision.tag); // XXX
     }
 
 }

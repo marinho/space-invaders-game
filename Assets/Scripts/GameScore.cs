@@ -11,12 +11,14 @@ public class GameScore : MonoBehaviour
     [SerializeField] GameObject pauseCanvas;
     [SerializeField] Player player;
 
-    [SerializeField] int phase = 1;
-    [SerializeField] public int playerHealth = 3;
+    [SerializeField] public int phase = 1;
+    [SerializeField] public int initialPlayerHealth = 3;
     [SerializeField] public int playerScore = 0;
 
     private bool gameHasStarted = false;
     private bool gameIsPaused = false;
+    private int playerHealth = 3;
+    private int maximumPlayerHealth = 3;
 
     private void Start()
     {
@@ -38,13 +40,13 @@ public class GameScore : MonoBehaviour
             rt.sizeDelta = new Vector2(playerHealth * healthImageWidth, rt.rect.height);
         }
 
-        if (Input.GetButton("Jump") && !gameHasStarted)
+        if (Input.GetButton("Submit") && !gameHasStarted)
         {
             StartNewGame();
         }
         else if (Input.GetButton("Cancel") && gameHasStarted)
         {
-            ToggleGamePause();
+            ToggleGamePause(!gameIsPaused);
         }
     }
 
@@ -58,17 +60,24 @@ public class GameScore : MonoBehaviour
         playerScore += scorePoints;
     }
 
-    public void ShowGameOver()
+    public void GameOver()
     {
+        ToggleGameFreeze(true);
         gameOverCanvas.SetActive(true);
         gameHasStarted = false;
     }
 
-    public void ToggleGamePause()
+    public void ToggleGamePause(bool newGamePaused)
+    {
+        gameIsPaused = newGamePaused;
+        ToggleGameFreeze(newGamePaused);
+        pauseCanvas.SetActive(newGamePaused);
+    }
+
+    public void ToggleGameFreeze(bool becomeFreezed)
     {
         var enemyMatrix = GetComponent<EnemyMatrix>();
-        gameIsPaused = !gameIsPaused;
-        if (gameIsPaused)
+        if (becomeFreezed)
         {
             enemyMatrix.DisableEnemies();
             player.DisablePlayer();
@@ -78,8 +87,6 @@ public class GameScore : MonoBehaviour
             enemyMatrix.EnableEnemies();
             player.EnablePlayer();
         }
-        pauseCanvas.SetActive(!pauseCanvas.activeInHierarchy);
-
     }
 
     public void StartNewGame()
@@ -87,12 +94,20 @@ public class GameScore : MonoBehaviour
         HideCanvasScreens();
 
         gameHasStarted = true;
-        playerHealth = 3;
+        maximumPlayerHealth = initialPlayerHealth;
+        playerHealth = initialPlayerHealth;
         playerScore = 0;
+        phase = 1;
         player.EnablePlayer();
 
         var enemyMatrix = GetComponent<EnemyMatrix>();
-        enemyMatrix.ShuffleNewEnemies(phase);
+        enemyMatrix.ResetEnemies();
+        enemyMatrix.EnableEnemies();
+    }
+
+    public int NextPhase()
+    {
+        return phase++;
     }
 
     private void HideCanvasScreens()
@@ -100,5 +115,20 @@ public class GameScore : MonoBehaviour
         gameOverCanvas.SetActive(false);
         startGameCanvas.SetActive(false);
         pauseCanvas.SetActive(false);
+    }
+
+    public void IncreaseMaximumPlayerHealth()
+    {
+        maximumPlayerHealth++;
+    }
+
+    public void ResetPlayerHealth()
+    {
+        playerHealth = maximumPlayerHealth;
+    }
+
+    public bool PlayerHealthIsZero()
+    {
+        return playerHealth == 0;
     }
 }
