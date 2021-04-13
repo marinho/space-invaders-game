@@ -122,8 +122,9 @@ MonoBehaviour:
   bulletGravity: 1
   hitDemage: 2
   scorePoints: 3
+  attackProbability: 0.92
   firePoint: {fileID: 2060362584945371024}
-  bullet: {fileID: 2085955725642860977, guid: ef7a34dbee07f46b3bb59d1a7d031742, type: 3}
+  bullet: {fileID: 7360590807126718936, guid: 819effd5a68c042059914170de0be51d, type: 3}
   gameScore: {fileID: 0}
   isRunning: 1
 --- !u!61 &-7765708540174315953

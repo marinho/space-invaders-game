@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour, IBulletTarget
     [SerializeField] public float bulletGravity = 1f;
     [SerializeField] public int hitDemage = 1;
     [SerializeField] public int scorePoints = 1;
+    [SerializeField] [Range(0, 1)] float attackProbability = 1f;
 
     [SerializeField] Transform firePoint;
     [SerializeField] GameObject bullet;
@@ -26,7 +27,10 @@ public class Enemy : MonoBehaviour, IBulletTarget
 
             if (timer >= attackFrequency)
             {
-                Attack();
+                if (Random.Range(0f, 1f) <= attackProbability)
+                {
+                    Attack();
+                }
                 timer = timer % attackFrequency;
             }
         }

@@ -17,8 +17,8 @@ public class GameScore : MonoBehaviour
 
     private bool gameHasStarted = false;
     private bool gameIsPaused = false;
-    private int playerHealth = 3;
-    private int maximumPlayerHealth = 3;
+    private int playerHealth;
+    private int maximumPlayerHealth;
 
     private void Start()
     {
@@ -129,6 +129,6 @@ public class GameScore : MonoBehaviour
 
     public bool PlayerHealthIsZero()
     {
-        return playerHealth == 0;
+        return playerHealth <= 0;
     }
 }

@@ -107,6 +107,18 @@ TextureImporter:
   - first:
       213: 5178949476682250458
     second: Box
+  - first:
+      213: 5784206663239978126
+    second: Bullet2
+  - first:
+      213: -5321352032151492901
+    second: Bullet3
+  - first:
+      213: 82221019933222782
+    second: Bullet4
+  - first:
+      213: -456372600722275210
+    second: Bullet5
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -925,12 +937,12 @@ TextureImporter:
       name: Box
       rect:
         serializedVersion: 2
-        x: 112
-        y: 32
+        x: 176
+        y: 0
         width: 48
         height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 8, y: 8, z: 8, w: 8}
       outline: []
       physicsShape: []
@@ -938,6 +950,90 @@ TextureImporter:
       bones: []
       spriteID: ad8375b1c135fd740800000000000000
       internalID: 5178949476682250458
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bullet2
+      rect:
+        serializedVersion: 2
+        x: 102
+        y: 69
+        width: 4
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e8ccddd6051a54050800000000000000
+      internalID: 5784206663239978126
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bullet3
+      rect:
+        serializedVersion: 2
+        x: 119
+        y: 69
+        width: 2
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bd6aece3582c626b0800000000000000
+      internalID: -5321352032151492901
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bullet4
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 69
+        width: 5
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e77a03ef49b142100800000000000000
+      internalID: 82221019933222782
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bullet5
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 67
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6744ab0a983aaa9f0800000000000000
+      internalID: -456372600722275210
       vertices: []
       indices: 
       edges: []
