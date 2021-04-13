@@ -6,6 +6,9 @@ TagManager:
   tags:
   - GameOverOnCollision
   - Enemy
+  - RecordHolderID
+  - RecordHolderName
+  - RecordHolderScore
   layers:
   - Default
   - TransparentFX

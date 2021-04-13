@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class GameScore : MonoBehaviour
 {
@@ -7,9 +8,11 @@ public class GameScore : MonoBehaviour
     [SerializeField] Image healthImage;
     [SerializeField] float healthImageWidth;
     [SerializeField] GameObject gameOverCanvas;
+    [SerializeField] public GameObject gameOverWithRecordCanvas;
     [SerializeField] GameObject startGameCanvas;
     [SerializeField] GameObject pauseCanvas;
     [SerializeField] Player player;
+    [SerializeField] public InputField recordNameInput;
 
     [SerializeField] public int phase = 1;
     [SerializeField] public int initialPlayerHealth = 3;
@@ -17,6 +20,7 @@ public class GameScore : MonoBehaviour
 
     private bool gameHasStarted = false;
     private bool gameIsPaused = false;
+    private bool isShowingDialogWithInput = false;
     private int playerHealth;
     private int maximumPlayerHealth;
 
@@ -25,6 +29,7 @@ public class GameScore : MonoBehaviour
         startGameCanvas.SetActive(true);
         pauseCanvas.SetActive(false);
         gameOverCanvas.SetActive(false);
+        gameOverWithRecordCanvas.SetActive(false);
     }
 
     void Update()
@@ -63,8 +68,34 @@ public class GameScore : MonoBehaviour
     public void GameOver()
     {
         ToggleGameFreeze(true);
-        gameOverCanvas.SetActive(true);
+
+        var recordHall = GetComponent<RecordsHall>();
+        if (recordHall.IsScoreHighEnough(playerScore))
+        {
+            isShowingDialogWithInput = true;
+            recordNameInput.text = "";
+            gameOverWithRecordCanvas.SetActive(true);
+            FocusInputField(recordNameInput);
+        }
+        else
+        {
+            gameOverCanvas.SetActive(true);
+        }
+
         gameHasStarted = false;
+    }
+
+    private void FocusInputField(InputField input)
+    {
+        EventSystem.current.SetSelectedGameObject(input.gameObject, null);
+        //input.OnPointerClick(null);
+    }
+
+    public void CloseDialogWithRecordHolderInput()
+    {
+        isShowingDialogWithInput = false;
+        gameOverWithRecordCanvas.SetActive(false);
+        ToggleGamePause(true);
     }
 
     public void ToggleGamePause(bool newGamePaused)
@@ -113,6 +144,7 @@ public class GameScore : MonoBehaviour
     private void HideCanvasScreens()
     {
         gameOverCanvas.SetActive(false);
+        gameOverWithRecordCanvas.SetActive(false);
         startGameCanvas.SetActive(false);
         pauseCanvas.SetActive(false);
     }
