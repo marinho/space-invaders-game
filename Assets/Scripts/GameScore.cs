@@ -40,7 +40,7 @@ public class GameScore : MonoBehaviour
             rt.sizeDelta = new Vector2(playerHealth * healthImageWidth, rt.rect.height);
         }
 
-        if (Input.GetButton("Submit") && !gameHasStarted)
+        if (Input.GetButton("Start") && !gameHasStarted)
         {
             StartNewGame();
         }

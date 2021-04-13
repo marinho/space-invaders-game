@@ -67,7 +67,10 @@ public class Enemy : MonoBehaviour, IBulletTarget
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("1119: " + collision.name + ", " + collision.tag); // XXX
+        if (collision.CompareTag("GameOverOnCollision") || collision.CompareTag("Player"))
+        {
+            gameScore.GameOver();
+        }
     }
 
 }
