@@ -5,12 +5,14 @@ using UnityEngine;
 public class EnemyMatrix : MonoBehaviour
 {
     [SerializeField] List<GameObject> enemies;
+    [SerializeField] List<GameObject> bonusItems;
     [SerializeField] GameObject enemyContainer;
     [SerializeField] int columns;
     [SerializeField] int gap;
     [SerializeField] float timeToNextRow = 2f;
     [SerializeField] float accellerationForNextRow = .5f;
     [SerializeField] GameObject respawn;
+    [SerializeField] [Range(0f,1f)] float bonusProbability = .1f;
 
     private List<GameObject> placedEnemies;
     private float counterTimeToNextRow = 0f;
@@ -89,9 +91,14 @@ public class EnemyMatrix : MonoBehaviour
         for (int counter = 0; counter < count; counter++)
         {
             float column = CalculateColumn(counter, count);
-            var enemyObj = AddEnemy(enemyIndex, column);
-
-            placedEnemies.Add(enemyObj);
+            if (Random.Range(0f, 1f) < bonusProbability)
+            {
+                AddBonusItem((int)Random.Range(0f, 2.99f), column);
+            }
+            else {
+                var enemyObj = AddEnemy(enemyIndex, column);
+                placedEnemies.Add(enemyObj);
+            }
         }
     }
 
@@ -104,13 +111,8 @@ public class EnemyMatrix : MonoBehaviour
 
     GameObject AddEnemy(int enemyIndex, float column)
     {
-        float shift = gap / 2;
         var rotation = GetComponent<Transform>().rotation;
-        var position = new Vector3(
-            column * gap + shift,
-            respawn.transform.position.y,
-            enemyContainer.transform.position.z
-        );
+        var position = CalculatePositionInMatrix(column);
         var enemyObj = Instantiate(enemies[enemyIndex], position, rotation);
         enemyObj.transform.parent = enemyContainer.transform;
 
@@ -118,6 +120,29 @@ public class EnemyMatrix : MonoBehaviour
         enemyInfo.gameScore = GetComponent<GameScore>();
 
         return enemyObj;
+    }
+
+    GameObject AddBonusItem(int itemIndex, float column)
+    {
+        var rotation = GetComponent<Transform>().rotation;
+        var position = CalculatePositionInMatrix(column);
+        var itemObj = Instantiate(bonusItems[itemIndex], position, rotation);
+        itemObj.transform.parent = enemyContainer.transform;
+
+        var itemInfo = itemObj.GetComponent<BonusItem>();
+        itemInfo.gameScore = GetComponent<GameScore>();
+
+        return itemObj;
+    }
+
+    Vector3 CalculatePositionInMatrix(float column)
+    {
+        float shift = gap / 2;
+        return new Vector3(
+            column * gap + shift,
+            respawn.transform.position.y,
+            enemyContainer.transform.position.z
+        );
     }
 
     public void ResetEnemies()

@@ -155,6 +155,9 @@ TextureImporter:
   - first:
       213: -7622572648055956566
     second: Space Invaders_50
+  - first:
+      213: 6047965685421821518
+    second: Shield
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -1322,6 +1325,27 @@ TextureImporter:
       bones: []
       spriteID: aab140e009e273690800000000000000
       internalID: -7622572648055956566
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shield
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 144
+        width: 48
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e4ec1555fb0bee350800000000000000
+      internalID: 6047965685421821518
       vertices: []
       indices: 
       edges: []

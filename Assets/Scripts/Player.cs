@@ -10,11 +10,13 @@ public class Player : MonoBehaviour, IBulletTarget
     [SerializeField] Transform firePoint;
     [SerializeField] GameObject bullet;
     [SerializeField] GameObject backend;
+    [SerializeField] GameObject shield;
 
     private bool isRunning;
     private Vector3 change;
     private Animator animator;
     private Rigidbody2D rigidbody2d;
+    private bool shieldIsEnabled = false;
 
     private void Awake()
     {
@@ -27,7 +29,6 @@ public class Player : MonoBehaviour, IBulletTarget
         rigidbody2d = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (isRunning)
@@ -43,6 +44,8 @@ public class Player : MonoBehaviour, IBulletTarget
 
             UpdateAnimationAndMove();
         }
+
+        shield.SetActive(shieldIsEnabled);
     }
 
     void UpdateAnimationAndMove()
@@ -119,5 +122,20 @@ public class Player : MonoBehaviour, IBulletTarget
     public void DisablePlayer()
     {
         isRunning = false;
+    }
+
+    public void EnableShield()
+    {
+        shieldIsEnabled = true;
+    }
+
+    public void DisableShield()
+    {
+        shieldIsEnabled = false;
+    }
+
+    public void ToggleeShield()
+    {
+        shieldIsEnabled = !shieldIsEnabled;
     }
 }
