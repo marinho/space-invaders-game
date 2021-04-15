@@ -17,7 +17,7 @@ public class GameScore : MonoBehaviour
     [SerializeField] public int phase = 1;
     [SerializeField] public int initialPlayerHealth = 3;
     [SerializeField] public int playerScore = 0;
-    [SerializeField] public float timeToKeepShieldEnabled = 5f;
+    [SerializeField] public float timeToKeepShieldEnabled = 10f;
 
     private bool gameHasStarted = false;
     private bool gameIsPaused = false;
@@ -67,6 +67,7 @@ public class GameScore : MonoBehaviour
                 player.ToggleeShield();
             }
         }
+
     }
 
     public void HitDamage(int damage)
@@ -175,6 +176,11 @@ public class GameScore : MonoBehaviour
     {
         counterTimeEnabledShield = 0;
         player.DisableShield();
+    }
+
+    public void MakeLaserAvailable()
+    {
+        player.MakeLaserAvailable();
     }
 
     public void IncreasePlayerHealth(int hearts)

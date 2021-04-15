@@ -41,6 +41,7 @@ public class BonusItem : MonoBehaviour
         {
             ApplyLaserBonus(target);
         }
+        Destroy(this);
     }
 
     private void ApplyHeartBonus(GameObject target)
@@ -58,7 +59,6 @@ public class BonusItem : MonoBehaviour
 
     private void ApplyLaserBonus(GameObject target)
     {
-        // TODO
-        //Debug.Log("1113"); // XXX
+        gameScore.MakeLaserAvailable();
     }
 }

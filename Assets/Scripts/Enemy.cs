@@ -75,6 +75,10 @@ public class Enemy : MonoBehaviour, IBulletTarget
         {
             gameScore.GameOver();
         }
+        else if (collision.CompareTag("Laser"))
+        {
+            TakeDamage(1, Vector3.zero);
+        }
     }
 
 }

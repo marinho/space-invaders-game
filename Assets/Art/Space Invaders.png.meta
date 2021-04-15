@@ -158,6 +158,12 @@ TextureImporter:
   - first:
       213: 6047965685421821518
     second: Shield
+  - first:
+      213: -6643426214511137472
+    second: Laser1
+  - first:
+      213: -3775467808439383505
+    second: Laser2
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -1338,7 +1344,7 @@ TextureImporter:
         width: 48
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1346,6 +1352,48 @@ TextureImporter:
       bones: []
       spriteID: e4ec1555fb0bee350800000000000000
       internalID: 6047965685421821518
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Laser1
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 160
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 04dab886e0fcdc3a0800000000000000
+      internalID: -6643426214511137472
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Laser2
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 144
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f2a4c011808da9bc0800000000000000
+      internalID: -3775467808439383505
       vertices: []
       indices: 
       edges: []

@@ -11,12 +11,17 @@ public class Player : MonoBehaviour, IBulletTarget
     [SerializeField] GameObject bullet;
     [SerializeField] GameObject backend;
     [SerializeField] GameObject shield;
+    [SerializeField] GameObject laser;
+    [SerializeField] public float timeToKeepLaserEnabled = 5f;
 
     private bool isRunning;
     private Vector3 change;
     private Animator animator;
     private Rigidbody2D rigidbody2d;
     private bool shieldIsEnabled = false;
+    private bool laserIsEnabled = false;
+    private bool laserIsAvailable = false;
+    private float counterTimeEnabledLaser = 0f;
 
     private void Awake()
     {
@@ -39,13 +44,35 @@ public class Player : MonoBehaviour, IBulletTarget
 
             if (Input.GetButtonDown("Jump"))
             {
-                Attack();
+                if (laserIsAvailable)
+                {
+                    laserIsAvailable = false;
+                    EnableLaser();
+                }
+                else
+                {
+                    Attack();
+                }
             }
 
             UpdateAnimationAndMove();
         }
 
+        if (counterTimeEnabledLaser > 0)
+        {
+            counterTimeEnabledLaser = Mathf.Max(0, counterTimeEnabledLaser - Time.deltaTime);
+            if (counterTimeEnabledLaser <= 0)
+            {
+                DisableLaser();
+            }
+            else if (counterTimeEnabledLaser <= timeToKeepLaserEnabled / 3)
+            {
+                ToggleLaser();
+            }
+        }
+
         shield.SetActive(shieldIsEnabled);
+        laser.SetActive(laserIsEnabled);
     }
 
     void UpdateAnimationAndMove()
@@ -72,7 +99,7 @@ public class Player : MonoBehaviour, IBulletTarget
 
     public void TakeDamage(int damage, Vector3 position)
     {
-        if (backend == null)
+        if (backend == null || laserIsEnabled)
         {
             return;
         }
@@ -138,4 +165,26 @@ public class Player : MonoBehaviour, IBulletTarget
     {
         shieldIsEnabled = !shieldIsEnabled;
     }
+
+    public void MakeLaserAvailable()
+    {
+        laserIsAvailable = true;
+    }
+
+    public void EnableLaser()
+    {
+        counterTimeEnabledLaser = timeToKeepLaserEnabled;
+        laserIsEnabled = true;
+    }
+
+    public void DisableLaser()
+    {
+        laserIsEnabled = false;
+    }
+
+    public void ToggleLaser()
+    {
+        laserIsEnabled = !laserIsEnabled;
+    }
+
 }

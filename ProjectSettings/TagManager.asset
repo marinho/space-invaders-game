@@ -9,6 +9,7 @@ TagManager:
   - RecordHolderID
   - RecordHolderName
   - RecordHolderScore
+  - Laser
   layers:
   - Default
   - TransparentFX
