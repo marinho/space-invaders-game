@@ -111,14 +111,17 @@ public class GameScore : MonoBehaviour
     public void ToggleGameFreeze(bool becomeFreezed)
     {
         var enemyMatrix = GetComponent<EnemyMatrix>();
+        var bonusRandomizer = GetComponent<BonusRandomizer>();
         if (becomeFreezed)
         {
             enemyMatrix.DisableEnemies();
+            bonusRandomizer.DisableBonus();
             player.DisablePlayer();
         }
         else
         {
             enemyMatrix.EnableEnemies();
+            bonusRandomizer.EnableBonus();
             player.EnablePlayer();
         }
     }
@@ -137,6 +140,9 @@ public class GameScore : MonoBehaviour
         var enemyMatrix = GetComponent<EnemyMatrix>();
         enemyMatrix.ResetEnemies();
         enemyMatrix.EnableEnemies();
+
+        var bonusRandomizer = GetComponent<BonusRandomizer>();
+        bonusRandomizer.EnableBonus();
     }
 
     public int NextPhase()
