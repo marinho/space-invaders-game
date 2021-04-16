@@ -29,22 +29,23 @@ public class BonusItem : MonoBehaviour
 
     private void TriggerBonusEvent(GameObject target)
     {
+        var player = target.GetComponent<Player>();
         if (bonusType == BonusType.heart)
         {
-            ApplyHeartBonus(target);
+            ApplyHeartBonus(player);
         }
         else if (bonusType == BonusType.shield)
         {
-            ApplyShieldBonus(target);
+            ApplyShieldBonus(player);
         }
         else if (bonusType == BonusType.laser)
         {
-            ApplyLaserBonus(target);
+            ApplyLaserBonus(player);
         }
         Destroy(gameObject);
     }
 
-    private void ApplyHeartBonus(GameObject target)
+    private void ApplyHeartBonus(Player player)
     {
         if (gameScore.PlayerHealthIsNotMaximum())
         {
@@ -52,13 +53,13 @@ public class BonusItem : MonoBehaviour
         }
     }
 
-    private void ApplyShieldBonus(GameObject target)
+    private void ApplyShieldBonus(Player player)
     {
-        gameScore.EnableShield();
+        player.EnableShield();
     }
 
-    private void ApplyLaserBonus(GameObject target)
+    private void ApplyLaserBonus(Player player)
     {
-        gameScore.MakeLaserAvailable();
+        player.MakeLaserAvailable();
     }
 }

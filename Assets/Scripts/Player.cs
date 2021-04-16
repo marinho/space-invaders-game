@@ -13,6 +13,7 @@ public class Player : MonoBehaviour, IBulletTarget
     [SerializeField] GameObject shield;
     [SerializeField] GameObject laser;
     [SerializeField] public float timeToKeepLaserEnabled = 5f;
+    [SerializeField] public float timeToKeepShieldEnabled = 10f;
 
     private bool isRunning;
     private Vector3 change;
@@ -22,6 +23,7 @@ public class Player : MonoBehaviour, IBulletTarget
     private bool laserIsEnabled = false;
     private bool laserIsAvailable = false;
     private float counterTimeEnabledLaser = 0f;
+    private float counterTimeEnabledShield = 0f;
 
     private void Awake()
     {
@@ -56,6 +58,19 @@ public class Player : MonoBehaviour, IBulletTarget
             }
 
             UpdateAnimationAndMove();
+        }
+
+        if (counterTimeEnabledShield > 0)
+        {
+            counterTimeEnabledShield = Mathf.Max(0, counterTimeEnabledShield - Time.deltaTime);
+            if (counterTimeEnabledShield <= 0)
+            {
+                DisableShield();
+            }
+            else if (counterTimeEnabledShield <= timeToKeepShieldEnabled / 3)
+            {
+                ToggleeShield();
+            }
         }
 
         if (counterTimeEnabledLaser > 0)
@@ -153,11 +168,13 @@ public class Player : MonoBehaviour, IBulletTarget
 
     public void EnableShield()
     {
+        counterTimeEnabledShield = timeToKeepShieldEnabled;
         shieldIsEnabled = true;
     }
 
     public void DisableShield()
     {
+        counterTimeEnabledShield = 0;
         shieldIsEnabled = false;
     }
 
@@ -185,6 +202,11 @@ public class Player : MonoBehaviour, IBulletTarget
     public void ToggleLaser()
     {
         laserIsEnabled = !laserIsEnabled;
+    }
+
+    public bool HasShieldEnabled()
+    {
+        return counterTimeEnabledShield > 0;
     }
 
 }

@@ -17,14 +17,12 @@ public class GameScore : MonoBehaviour
     [SerializeField] public int phase = 1;
     [SerializeField] public int initialPlayerHealth = 3;
     [SerializeField] public int playerScore = 0;
-    [SerializeField] public float timeToKeepShieldEnabled = 10f;
 
     private bool gameHasStarted = false;
     private bool gameIsPaused = false;
     private bool isShowingDialogWithInput = false;
     private int playerHealth;
     private int maximumPlayerHealth;
-    private float counterTimeEnabledShield = 0f;
 
     private void Start()
     {
@@ -56,23 +54,11 @@ public class GameScore : MonoBehaviour
             ToggleGamePause(!gameIsPaused);
         }
 
-        if (counterTimeEnabledShield > 0)
-        {
-            counterTimeEnabledShield = Mathf.Max(0, counterTimeEnabledShield - Time.deltaTime);
-            if (counterTimeEnabledShield <= 0)
-            {
-                DisableShield();
-            } else if (counterTimeEnabledShield <= timeToKeepShieldEnabled / 3)
-            {
-                player.ToggleeShield();
-            }
-        }
-
     }
 
     public void HitDamage(int damage)
     {
-        if (counterTimeEnabledShield <= 0)
+        if (!player.HasShieldEnabled())
         {
             playerHealth -= damage;
         }
@@ -164,23 +150,6 @@ public class GameScore : MonoBehaviour
         gameOverWithRecordCanvas.SetActive(false);
         startGameCanvas.SetActive(false);
         pauseCanvas.SetActive(false);
-    }
-
-    public void EnableShield()
-    {
-        counterTimeEnabledShield = timeToKeepShieldEnabled;
-        player.EnableShield();
-    }
-
-    public void DisableShield()
-    {
-        counterTimeEnabledShield = 0;
-        player.DisableShield();
-    }
-
-    public void MakeLaserAvailable()
-    {
-        player.MakeLaserAvailable();
     }
 
     public void IncreasePlayerHealth(int hearts)
