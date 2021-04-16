@@ -41,7 +41,7 @@ public class BonusItem : MonoBehaviour
         {
             ApplyLaserBonus(target);
         }
-        Destroy(this);
+        Destroy(gameObject);
     }
 
     private void ApplyHeartBonus(GameObject target)
